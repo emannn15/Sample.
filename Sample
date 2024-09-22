@@ -1,0 +1,41 @@
+class Process:
+    def __init__(self, id, burst_time, priority):
+        self.id = id
+        self.burst_time = burst_time
+        self.priority = priority
+
+    def increase_priority(self):
+        self.priority += 1  # Increment priority as it waits
+
+
+def schedule_processes(processes):
+    time = 0
+
+    while processes:
+        # Increase priority of all waiting processes
+        for process in processes:
+            process.increase_priority()
+
+        # Find the process with the highest priority
+        highest_priority_process = max(processes, key=lambda p: p.priority)
+
+        # Print the current process being executed
+        print(f"Time: {time} - Running process ID: {highest_priority_process.id} (Priority: {highest_priority_process.priority})")
+
+        # Increment time by burst time of the selected process
+        time += highest_priority_process.burst_time
+
+        # Remove the process after execution
+        processes.remove(highest_priority_process)
+
+
+if __name__ == "__main__":
+    # List of processes
+    processes = [
+        Process(1, 4, 1),  # Process(id, burst_time, priority)
+        Process(2, 3, 2),
+        Process(3, 2, 1)
+    ]
+
+    # Simulate the scheduling process
+    schedule_processes(processes)
